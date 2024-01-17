@@ -28,6 +28,7 @@ import { usdcToDecimal, usdcToUsd } from "./currency";
 
 export function handleTransfer(event: TransferEvent): void {
   _updateTokenSupply(event);
+  _updateQuarterlyDividend(event)
 }
 
 export function _updateIndieMemberCount(timestamp: BigInt): void {
@@ -157,7 +158,7 @@ function _updateQuarterlyIndieMemberCount(timestamp: BigInt): void {
 }
 
 function _updateQuarterlyDividend(
-  event: SeasonalDividendEvent
+  event: TransferEvent
 ): void {
   let currentQuarter = findOrCreateQuarterFromTimestamp(event.block.timestamp);
   let currentSeason = getSeasonIdByQuarterId(currentQuarter.id);
@@ -224,7 +225,6 @@ export function handleSeasonalDividend(event: SeasonalDividendEvent): void {
   entity.save();
 
   _updateIndieMemberCount(event.block.timestamp)
-  _updateQuarterlyDividend(event)
 }
 
 export function handleSeasonalMemberClaimedDividend(
